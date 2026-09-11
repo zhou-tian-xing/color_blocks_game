@@ -1,0 +1,44 @@
+name: Deploy to GitHub Pages
+
+# 把 public/ 发布成静态站点。整个应用是纯前端的，不需要构建步骤，
+# 直接把 public/ 整个目录当作站点根目录上传即可。
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # enablement: true —— 如果仓库还没开 Pages，这一步会自动把它打开，
+      # 省得再去 Settings 里手点一遍。
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

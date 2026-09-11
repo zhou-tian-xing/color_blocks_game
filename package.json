@@ -1,0 +1,19 @@
+{
+  "name": "chromatic-acuity-test",
+  "version": "1.0.0",
+  "private": true,
+  "description": "纯前端色觉鉴别能力测试 —— 自适应估计最小可鉴别 ΔE00（中值 + 误差范围），本地保留最高纪录",
+  "keywords": ["color-vision", "delta-e", "ciede2000", "psychophysics", "vision-test"],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "serve": "node server.js",
+    "test": "node tools/smoke-test.mjs"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

@@ -1,0 +1,6 @@
+{
+  "name": "chromatic-acuity-test-frontend",
+  "private": true,
+  "type": "module",
+  "description": "把 public/ 下的 .js 标记为 ES Module —— 浏览器本来就按模块解析它们，Node 里的测试脚本也就能直接 import。"
+}

@@ -1,0 +1,6 @@
+# 统一用 LF 存进仓库，避免 Windows 上 CRLF 造成的无意义 diff
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.ico binary

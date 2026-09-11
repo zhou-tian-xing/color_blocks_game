@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="description" content="自适应色觉鉴别能力测试：用 CIEDE2000 估计你的最小可鉴别色差 ΔE00，给出中值与误差范围。" />
+    <title>色觉鉴别能力测试 · Chromatic Acuity</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23090c15'/%3E%3Crect x='5' y='5' width='9.5' height='9.5' rx='2.5' fill='%236ee7ff'/%3E%3Crect x='17.5' y='5' width='9.5' height='9.5' rx='2.5' fill='%23a78bfa'/%3E%3Crect x='5' y='17.5' width='9.5' height='9.5' rx='2.5' fill='%23a78bfa'/%3E%3Crect x='17.5' y='17.5' width='9.5' height='9.5' rx='2.5' fill='%2334d399'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <div class="brand-text">
+            <h1>色觉鉴别能力测试</h1>
+            <p>自适应阈值估计 · CIEDE2000</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="record-chip" id="recordChip" title="本机历史最高纪录（中值 ΔE00 越低越好）">
+            <span class="rc-label">本机纪录</span>
+            <b id="recordValue">—</b>
+          </div>
+          <button class="icon-btn" id="soundBtn" type="button" aria-pressed="true" title="音效开关">
+            <span id="soundIcon">🔊</span>
+          </button>
+          <button class="btn ghost" id="abortBtn" type="button" hidden>结束本轮</button>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="panel stage-panel">
+          <div class="stage-head">
+            <div class="stage-meta">
+              <span class="pill" id="sizePill">2 × 2</span>
+              <span class="pill subtle" id="trialPill">第 1 / 21 轮</span>
+            </div>
+            <div class="timer" id="timer">
+              <div class="timer-track"><div class="timer-fill" id="timerFill"></div></div>
+              <span class="timer-text" id="timerText">30.0s</span>
+            </div>
+          </div>
+
+          <div class="grid-frame">
+            <div class="grid" id="grid" aria-label="请点选颜色不同的那一个色块"></div>
+            <div class="grid-idle" id="gridIdle">
+              <div class="idle-rings" aria-hidden="true"><i></i><i></i><i></i></div>
+              <p>点击下方按钮开始测试</p>
+            </div>
+          </div>
+
+          <div class="feedback" id="feedback" data-tone="idle" aria-live="polite">
+            <span class="fb-dot" aria-hidden="true"></span>
+            <span class="fb-text" id="feedbackText">准备就绪</span>
+            <span class="fb-de" id="feedbackDe"></span>
+          </div>
+        </section>
+
+        <aside class="side-panel">
+          <div class="panel side-block">
+            <div class="side-head">
+              <h2>阈值后验分布</h2>
+              <span class="hint">不确定度 ↓</span>
+            </div>
+            <canvas id="posteriorChart" class="chart"></canvas>
+          </div>
+
+          <div class="panel side-block">
+            <div class="side-head">
+              <h2>逐轮阶梯</h2>
+              <span class="hint"><i class="dot good"></i>对 <i class="dot bad"></i>错</span>
+            </div>
+            <canvas id="trialChart" class="chart tall"></canvas>
+          </div>
+
+          <div class="panel side-block stats">
+            <div class="stat"><label>后验中值</label><b id="sMedian">—</b></div>
+            <div class="stat"><label>68% 区间</label><b id="sRange">—</b></div>
+            <div class="stat"><label>正确率</label><b id="sAcc">—</b></div>
+            <div class="stat"><label>平均反应</label><b id="sRt">—</b></div>
+          </div>
+
+          <button class="btn primary wide" id="startBtn" type="button">开始测试</button>
+        </aside>
+      </main>
+
+      <footer class="footnote">
+        本测试测量的是<b>显示器上</b>的色差辨别阈，受屏幕素质、环境光与色彩配置文件影响，仅供自我参考，不能替代医学色觉检查（如 Ishihara / FM-100）。
+      </footer>
+    </div>
+
+    <div class="overlay" id="overlay" hidden>
+      <div class="modal" id="modal" role="dialog" aria-modal="true"></div>
+    </div>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
